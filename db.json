@@ -23,6 +23,14 @@
       "title": "Make a Clone",
       "status": "Completed",
       "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 3,
+      "bgColor": "bg-green-200",
+      "textColor": "text-green-900",
+      "title": "Make a Clone",
+      "status": "Completed",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
     }
   ]
 }
