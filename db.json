@@ -10,25 +10,33 @@
     },
     {
       "id": 1,
-      "bgColor": "bg-yellow-200",
-      "textColor": "text-yellow-900",
-      "title": "Make a Clone",
-      "status": "Doing",
+      "bgColor": "bg-red-200",
+      "textColor": "text-red-900",
+      "title": "Add Axios",
+      "status": "To Do",
       "description": "Develop a clone for notion to track tasks on Nuxt."
     },
     {
       "id": 2,
-      "bgColor": "bg-green-200",
-      "textColor": "text-green-900",
-      "title": "Make a Clone",
-      "status": "Completed",
+      "bgColor": "bg-yellow-200",
+      "textColor": "text-yellow-900",
+      "title": "Adding DB with JSON Server",
+      "status": "Doing",
       "description": "Develop a clone for notion to track tasks on Nuxt."
     },
     {
       "id": 3,
       "bgColor": "bg-green-200",
       "textColor": "text-green-900",
-      "title": "Make a Clone",
+      "title": "Fix UI",
+      "status": "Completed",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 4,
+      "bgColor": "bg-green-200",
+      "textColor": "text-green-900",
+      "title": "Drag and Drop",
       "status": "Completed",
       "description": "Develop a clone for notion to track tasks on Nuxt."
     }
