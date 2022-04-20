@@ -10,7 +10,7 @@
     },
     {
       "id": 1,
-      "bgColor": "bg-yello-200",
+      "bgColor": "bg-yellow-200",
       "textColor": "text-yellow-900",
       "title": "Make a Clone",
       "status": "Doing",
