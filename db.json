@@ -1,0 +1,28 @@
+{
+  "tasks": [
+    {
+      "id": 0,
+      "bgColor": "bg-red-200",
+      "textColor": "text-red-900",
+      "title": "Make a Clone",
+      "status": "To Do",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 1,
+      "bgColor": "bg-yello-200",
+      "textColor": "text-yellow-900",
+      "title": "Make a Clone",
+      "status": "To Do",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 2,
+      "bgColor": "bg-green-200",
+      "textColor": "text-green-900",
+      "title": "Make a Clone",
+      "status": "To Do",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
+    }
+  ]
+}
