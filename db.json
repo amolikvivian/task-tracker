@@ -13,7 +13,7 @@
       "bgColor": "bg-yello-200",
       "textColor": "text-yellow-900",
       "title": "Make a Clone",
-      "status": "To Do",
+      "status": "Doing",
       "description": "Develop a clone for notion to track tasks on Nuxt."
     },
     {
@@ -21,7 +21,7 @@
       "bgColor": "bg-green-200",
       "textColor": "text-green-900",
       "title": "Make a Clone",
-      "status": "To Do",
+      "status": "Completed",
       "description": "Develop a clone for notion to track tasks on Nuxt."
     }
   ]
