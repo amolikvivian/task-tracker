@@ -1,5 +1,8 @@
 <template>
   <div v-if="task" class="flex flex-col p-4 md:p-16 md:w-6/12">
+    <button @click="backHome()" class="flex text-lg">
+      <Icon name="arrow-left" class="pb-4 mt-1" />
+    </button>
     <textarea
       class="text-5xl font-bold flex items-center py-2 focus:border-none focus:outline-none resize-none"
       cols="30"
@@ -64,6 +67,9 @@ export default {
         data: this.task,
       }
       this.$store.dispatch('updateTask', payload)
+    },
+    backHome() {
+      this.$router.push('/')
     },
   },
 }
