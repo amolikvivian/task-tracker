@@ -39,6 +39,14 @@
       "title": "Drag and Drop",
       "status": "Completed",
       "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 5,
+      "bgColor": "bg-blue-200",
+      "textColor": "text-blue-900",
+      "title": "Fix Status Update",
+      "status": "Dump",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
     }
   ]
 }
