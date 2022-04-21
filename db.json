@@ -1,60 +1,52 @@
 {
   "tasks": [
     {
-      "t_id": 0,
-      "status": "To Do",
+      "id": 0,
       "bgColor": "bg-red-200",
       "textColor": "text-red-900",
-      "list": [
-        {
-          "id": 0,
-          "title": "Make a Clone",
-          "description": "Develop a clone for notion to track tasks on Nuxt."
-        },
-        {
-          "id": 1,
-          "title": "Add Axios",
-          "description": "Add Axios to the Nuxt Project."
-        }
-      ]
+      "title": "Make a Clone",
+      "status": "To Do",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
     },
     {
-      "t_id": 1,
-      "status": "Doing",
+      "id": 1,
+      "bgColor": "bg-red-200",
+      "textColor": "text-red-900",
+      "title": "Add Axios",
+      "status": "To Do",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 2,
       "bgColor": "bg-yellow-200",
       "textColor": "text-yellow-900",
-      "list": [
-        {
-          "id": 0,
-          "title": "Fix UI",
-          "description": "Fix UI issues."
-        },
-        {
-          "id": 1,
-          "title": "Setup JSON server",
-          "description": "Setup my JSON server for live data."
-        }
-      ]
+      "title": "Adding DB with JSON Server",
+      "status": "Doing",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
     },
     {
-      "t_id": 2,
-      "status": "Completed",
+      "id": 3,
       "bgColor": "bg-green-200",
       "textColor": "text-green-900",
-      "list": [
-        {
-          "id": 0,
-          "title": "Add Page",
-          "description": "Add individual pages for tasks."
-        }
-      ]
+      "title": "Fix UI",
+      "status": "Completed",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
     },
     {
-      "t_id": 3,
-      "status": "Dump",
+      "id": 4,
+      "bgColor": "bg-green-200",
+      "textColor": "text-green-900",
+      "title": "Drag and Drop",
+      "status": "Completed",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
+    },
+    {
+      "id": 5,
       "bgColor": "bg-blue-200",
       "textColor": "text-blue-900",
-      "list": []
+      "title": "Fix Status Update",
+      "status": "Dump",
+      "description": "Develop a clone for notion to track tasks on Nuxt."
     }
   ]
 }
