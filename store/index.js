@@ -28,15 +28,19 @@ export const actions = {
     let res = await this.$axios.get('/tasks')
     commit('SET_TASKS', res.data)
   },
-  getTaskById({ commit, state }, id) {
-    // let res = await this.$axios.get('/tasks/' + id)
-    commit('SET_TASK', state.tasks[id])
+  async getTaskById({ commit }, id) {
+    if (id == null) {
+      commit('SET_TASK', null)
+    } else {
+      let res = await this.$axios.get('/tasks/' + id)
+      commit('SET_TASK', res.data)
+    }
   },
   async addTask({ commit }, payload) {
     let res = await this.$axios.post('/tasks', payload)
     commit('ADD_TASK', res.data)
   },
-  updateTask({ commit }, payload) {
+  async updateTask({ commit }, payload) {
     // let res = await this.$axios.put('/tasks/' + payload.id, payload.data)
     commit('UPDATE_TASK', payload)
   },

@@ -56,16 +56,16 @@ export default {
   destroyed() {
     this.$store.dispatch('getTaskById', null)
   },
-  
+
   methods: {
     updateTask() {
       let payload = {
         id: this.$route.params.id,
-        data: this.task
+        data: this.task,
       }
       this.$store.dispatch('updateTask', payload)
-    }
-  }
+    },
+  },
 }
 </script>
 

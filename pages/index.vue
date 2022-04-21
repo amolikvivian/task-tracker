@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 md:p-16">
     <Header />
-    <div class="flex overflow-x-auto">
+    <div v-if="tasks" class="flex overflow-x-auto">
       <TaskColumn
         class="pt-10 pr-6"
         v-for="statusData in uniqueStatusData"
@@ -9,6 +9,9 @@
         :status="statusData"
         :data="tasks"
       />
+    </div>
+    <div v-else>
+     <Loader/>
     </div>
   </div>
 </template>
