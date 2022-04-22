@@ -4,13 +4,13 @@
       <Icon name="arrow-left" class="pb-4 mt-1" />
     </button>
     <textarea
-      class="text-5xl font-bold flex items-center py-2 focus:border-none focus:outline-none resize-none"
+      class="text-4xl font-bold flex items-center py-2 focus:border-none focus:outline-none resize-none"
       cols="30"
       rows="1"
       @input="updateTask"
       v-model="task.title"
     ></textarea>
-    <div class="flex items-center justify-between pt-3">
+    <div class="flex items-center justify-between pt-3 text-sm">
       <span class="bg-gray-200 px-2 flex items-center rounded">
         Date Created
         <Icon name="clock" class="mt-1 pl-1" />
@@ -18,7 +18,7 @@
 
       <span class="rounded px-2 w-max text-gray-500">April 17, 2022</span>
     </div>
-    <div class="flex items-center justify-between pt-3">
+    <div class="flex items-center justify-between pt-3 text-sm">
       <button class="bg-gray-200 px-2 flex items-center rounded">
         Status
         <Icon name="arrow-down" class="mt-1 pl-1" />
@@ -31,7 +31,7 @@
       >
     </div>
     <hr class="my-4" />
-    <span class="text-lg text-gray-500">Description</span>
+    <span class="text-md text-gray-500">Description</span>
     <textarea
       cols="30"
       rows="10"

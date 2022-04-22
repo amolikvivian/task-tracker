@@ -5,7 +5,7 @@
       @mouseenter="showActions = true"
       @mouseleave="showActions = false"
     >
-      <div class="flex items-center justify-around">
+      <div class="flex items-center justify-around text-sm">
         <span
           class="rounded px-2 ml-1"
           :class="[status.bgColor, status.textColor]"

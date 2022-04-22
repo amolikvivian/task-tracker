@@ -4,7 +4,7 @@
     @mouseenter="showOptions = true"
     @mouseleave="showOptions = false"
   >
-    <span>{{ taskData.title }}</span>
+    <span class="text-sm">{{ taskData.title }}</span>
     <div class="flex">
       <button
         v-if="showOptions"
