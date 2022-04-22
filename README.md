@@ -1,5 +1,19 @@
 # task-tracker
 
+Features Added
+
+- [x] Drag and Drop
+- [x] Add New Task
+- [x] View Task Page
+- [x] Edit Title and Description
+- [x] Delete Task
+
+To Add
+
+- [ ] Status Change from drag and drop
+- [ ] Status Change from task page 
+
+
 ## Build Setup
 
 ```bash
