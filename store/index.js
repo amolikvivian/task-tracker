@@ -29,6 +29,7 @@ export const mutations = {
           obj = {
             ...t,
             status: task.status,
+            status_id: task.t_id,
             bgColor: task.bgColor,
             textColor: task.textColor,
           }

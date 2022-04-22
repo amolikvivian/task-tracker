@@ -31,7 +31,10 @@
       >
     </div>
     <div class="flex items-center justify-between pt-5 text-sm">
-      <button @click="deleteTask()" class="text-red-400 px-1 font-medium flex items-center rounded">
+      <button
+        @click="deleteTask()"
+        class="text-red-400 px-1 font-medium flex items-center rounded"
+      >
         Delete Task
       </button>
     </div>
@@ -84,11 +87,11 @@ export default {
     deleteTask() {
       let payload = {
         id: this.task.id,
-        status: this.task.status
+        status_id: this.task.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
       this.$router.push('/')
-    }
+    },
   },
 }
 </script>
