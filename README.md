@@ -8,10 +8,11 @@
 - [x] Edit Title and Description
 - [x] Delete Task
 
-## To Add
+## To Add/Fix
 
 - [ ] Status Change from drag and drop
 - [ ] Status Change from task page 
+- [ ] Fix Tailwind issues on deployment
 
 
 ## Build Setup
