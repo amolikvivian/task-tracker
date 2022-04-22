@@ -9,11 +9,33 @@ export const mutations = {
   SET_TASKS(state, data) {
     state.tasks = data
   },
-  ADD_TASK(state, data) {
-    state.tasks.push(data)
+  ADD_TASK(state, { id, status, title, description }) {
+    let newTask = {
+      id: id,
+      title: title,
+      description: description,
+    }
+    state.tasks.map((task) => {
+      if (task.status === status) {
+        task.list.push(newTask)
+      }
+    })
   },
-  SET_TASK(state, data) {
-    state.task = data
+  SET_TASK(state, id) {
+    let obj = {}
+    state.tasks.map((task) => {
+      task.list.map((t) => {
+        if (t.id == id) {
+          obj = {
+            ...t,
+            status: task.status,
+            bgColor: task.bgColor,
+            textColor: task.textColor
+          }
+          state.task = obj
+        }
+      })
+    })
   },
   UPDATE_TASK(state, data) {
     state.tasks[data.id] = data.data
@@ -28,23 +50,24 @@ export const actions = {
     let res = await this.$axios.get('/tasks')
     commit('SET_TASKS', res.data)
   },
-  async getTaskById({ commit }, id) {
+  getTaskById({ commit }, id) {
     if (id == null) {
       commit('SET_TASK', null)
     } else {
-      let res = await this.$axios.get('/tasks/' + id)
-      commit('SET_TASK', res.data)
+      // let res = await this.$axios.get('/tasks/' + id)
+      commit('SET_TASK', id)
     }
   },
-  async addTask({ commit }, payload) {
-    let res = await this.$axios.post('/tasks', payload)
-    commit('ADD_TASK', res.data)
+  addTask({ commit }, payload) {
+    // let res = await this.$axios.post('/tasks', payload)
+    commit('ADD_TASK', payload)
   },
-  async updateTask({ commit }, payload) {
+  updateTask({ commit }, payload) {
     // let res = await this.$axios.put('/tasks/' + payload.id, payload.data)
     commit('UPDATE_TASK', payload)
   },
   deleteTask({ commit }, id) {
+    // let res = await this.$axios.delete('/tasks/ + id)
     commit('DELETE_TASK', id)
   },
 }

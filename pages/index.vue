@@ -1,17 +1,18 @@
 <template>
-  <div class="p-4 md:p-16">
+  <div class="p-4 md:px-12 md:py-16">
     <Header />
-    <div v-if="tasks" class="flex overflow-x-auto">
+    <div v-if="tasks" class="flex overflow-x-auto items-top">
       <TaskColumn
         class="pt-10 pr-6"
-        v-for="statusData in uniqueStatusData"
-        :key="statusData.id"
-        :status="statusData"
-        :data="tasks"
+        v-for="taskList in tasks" 
+        :key="taskList.t_id"
+        :status="taskList.status"
+        :data="taskList.list"
+        :colors="[taskList.bgColor, taskList.textColor]"
       />
     </div>
     <div v-else>
-     <Loader/>
+      <Loader />
     </div>
   </div>
 </template>

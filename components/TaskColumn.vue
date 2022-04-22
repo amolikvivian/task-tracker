@@ -8,8 +8,8 @@
       <div class="flex items-center justify-around text-sm">
         <span
           class="rounded px-2 ml-1"
-          :class="[status.bgColor, status.textColor]"
-          >{{ status.status }}
+          :class="[colors[0], colors[1]]"
+          >{{ status }}
         </span>
         <span class="text-gray-400 px-3 font-normal">{{count}}</span>
       </div>
@@ -27,16 +27,15 @@
         </button>
       </div>
     </div>
-
     <draggable
-      v-model="filteredTasks"
+      v-model="tasks"
       group="tasks"
       @start="drag = true"
       @end="drag = false"
-      :ghostClass="status.bgColor"
+      :ghostClass="colors[0]"
       animation="400"
     >
-      <div v-for="(task, i) in filteredTasks" :key="i">
+      <div v-for="(task, i) in tasks" :key="i">
         <TaskCard
           class="mt-2"
           :taskData="task"
@@ -52,38 +51,35 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable'
 export default {
-  props: ['status', 'data'],
+  props: ['status', 'data', 'colors'],
   components: {
     draggable,
   },
   data() {
     return {
       showActions: false,
-      filteredTasks: [],
+      tasks: [],
     }
   },
   mounted() {
-    this.getFilteredTasks()
+    this.getTasks()
   },
   computed: {
     count() {
-      return this.filteredTasks.length
+      return this.tasks.length
     },
   },
   methods: {
-    getFilteredTasks() {
-      this.filteredTasks = this.data.filter(
-        (task) => task.status === this.status.status
-      )
+    getTasks() {
+      this.tasks = this.data
     },
-    addTask(status) {
+    addTask() {
       let payload = {
-        id: this.data[this.data.length - 1].id + 1,
-        status: status.status,
-        bgColor: status.bgColor,
-        textColor: status.textColor,
+        id: uuidv4(),
+        status: this.status,
         title: 'New Task',
         description: '',
       }
@@ -93,7 +89,7 @@ export default {
       this.$router.push({ path: '/task/' + id })
     },
     deleteTask(id) {
-      this.filteredTasks = this.filteredTasks.filter((task) => task.id !== id)
+      this.tasks = this.tasks.filter((task) => task.id !== id)
     },
   },
 }
