@@ -1,6 +1,6 @@
 # task-tracker
 
-Features Added
+## Features Added
 
 - [x] Drag and Drop
 - [x] Add New Task
@@ -8,7 +8,7 @@ Features Added
 - [x] Edit Title and Description
 - [x] Delete Task
 
-To Add
+## To Add
 
 - [ ] Status Change from drag and drop
 - [ ] Status Change from task page 
