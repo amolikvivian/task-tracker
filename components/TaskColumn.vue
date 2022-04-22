@@ -32,8 +32,7 @@
       @end="drag = false"
       :ghostClass="colors[0]"
       animation="400"
-      :data-box="this.status.label"
-      :move="moveItem"
+      :data-box="this.status.status_id"
     >
       <div v-for="(task, i) in tasks" :key="i" :data-id="task.id">
         <TaskCard
@@ -67,13 +66,7 @@ export default {
   mounted() {
     this.getTasks()
   },
-  watch: {
-    '$store.state.tasks': function () {
-      this.$store.state.tasks.map((task) => {
-        task.list
-      })
-    },
-  },
+
   computed: {
     count() {
       return this.tasks.length
@@ -85,14 +78,14 @@ export default {
     },
     addTask() {
       let payload = {
-        id: uuidv4(),
-        status_id: this.status.status_id,
-        title: 'New Task',
-        description: '',
-      }
-      this.$store.dispatch('addTask', payload)
+          id: uuidv4(),
+          status_id: this.status.status_id,
+          title: 'New Task',
+          description: '',
+        }
+        this.$store.dispatch('addTask', payload)
     },
-    
+
     deleteTask(id) {
       this.tasks = this.tasks.filter((task) => task.id !== id)
       let payload = {
@@ -106,10 +99,10 @@ export default {
       let movedTask = e.draggedContext.element
       payload = {
         ...movedTask,
-        oldStatus: e.from.attributes['data-box']['value'],
-        newStatus: e.to.attributes['data-box']['value'],
+        status_id: Number(e.from.attributes['data-box']['value']),
+        new_tid: Number(e.to.attributes['data-box']['value']),
       }
-      this.$store.dispatch('updateTask', payload)
+      this.$store.dispatch('updateStatus', payload)
     },
     toTaskPage(id) {
       this.$router.push({ path: '/task/' + id })

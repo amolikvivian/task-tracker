@@ -15,19 +15,18 @@
         Date Created
         <Icon name="clock" class="mt-1 pl-1" />
       </span>
-
       <span class="rounded px-2 w-max text-gray-500">April 17, 2022</span>
     </div>
-    <div class="flex items-center justify-between pt-3 text-sm">
-      <span class="bg-gray-200 px-2 flex items-center rounded">
-        Status
-        <Icon name="arrow-down" class="mt-1 pl-1" />
-      </span>
+    <div
+      class="flex items-center justify-between pt-3 text-sm cursor-pointer"
+      @click="changeStatus()"
+    >
+      <span class="bg-gray-200 px-2 flex items-center rounded"> Status </span>
 
       <span
         class="rounded px-2 w-max mr-2"
-        :class="[task.bgColor, task.textColor]"
-        >{{ task.status }}</span
+        :class="[statusList[counter].bgColor, statusList[counter].textColor]"
+        >{{ statusList[counter].status }}</span
       >
     </div>
     <div class="flex items-center justify-between pt-5 text-sm">
@@ -59,20 +58,27 @@ export default {
   data() {
     return {
       task: null,
+      counter: 0,
+      currentStatus: null,
     }
   },
   mounted() {
     this.$store.dispatch('getTaskById', this.$route.params.id)
+    this.getCurrentIndex()
   },
   watch: {
     '$store.state.task': function () {
       this.task = { ...this.$store.getters.task }
     },
   },
+  computed: {
+    statusList() {
+      return this.$store.getters.statusList
+    },
+  },
   destroyed() {
     this.$store.dispatch('getTaskById', null)
   },
-
   methods: {
     updateTask() {
       let payload = {
@@ -91,6 +97,21 @@ export default {
       }
       this.$store.dispatch('deleteTask', payload)
       this.$router.push('/')
+    },
+    getCurrentIndex() {
+      console.log(this.$store.getters.task)
+      // this.counter = this.$store.getters.task.status_id
+    },
+    changeStatus() {
+      this.counter++
+      if (this.counter > this.statusList.length - 1) this.counter = 0
+
+      let payload = {
+        ...this.task,
+        new_tid: this.counter,
+      }
+
+      this.$store.dispatch('updateStatus', payload)
     },
   },
 }
