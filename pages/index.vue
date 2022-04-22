@@ -3,7 +3,7 @@
     <Header />
     <div class="flex items-center py-5">
       <button @click="toggleNewStatus()" class="flex flex items-center w-2/12">
-        <Icon name="plus-circle" /> <span class="pl-2">Add New Status</span>
+        <Icon name="plus-circle" /> <span class="p-2">Add New Status</span>
       </button>
       <div v-if="showNewStatusLabel" class="flex items-center">
         <input
