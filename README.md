@@ -9,7 +9,8 @@
 - [x] Delete Task
 - [x] Fix Tailwind issues on deployment
 - [x] Add New Status
-- [ ] Status Change
+- [x] Status Change from task view page
+- [ ] Status Change on drag and drop
 
 
 ## Build Setup
