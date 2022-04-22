@@ -7,7 +7,7 @@
     >
       <div class="flex items-center justify-around text-sm">
         <span class="rounded px-2 ml-1" :class="[colors[0], colors[1]]"
-          >{{ status }}
+          >{{ status.label }}
         </span>
         <span class="text-gray-400 px-3 font-normal">{{ count }}</span>
       </div>
@@ -32,7 +32,7 @@
       @end="drag = false"
       :ghostClass="colors[0]"
       animation="400"
-      :data-box="status"
+      :data-box="this.status.label"
       :move="moveItem"
     >
       <div v-for="(task, i) in tasks" :key="i" :data-id="task.id">
@@ -86,7 +86,7 @@ export default {
     addTask() {
       let payload = {
         id: uuidv4(),
-        status: this.status,
+        status_id: this.status.status_id,
         title: 'New Task',
         description: '',
       }
@@ -97,7 +97,7 @@ export default {
       this.tasks = this.tasks.filter((task) => task.id !== id)
       let payload = {
         id: id,
-        status: this.status,
+        status_id: this.status.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
     },

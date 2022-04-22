@@ -25,7 +25,9 @@
         class="pr-4"
         v-for="taskList in tasks"
         :key="taskList.t_id"
-        :status="taskList.status"
+        :status="
+          (status = { status_id: taskList.t_id, label: taskList.status })
+        "
         :data="taskList.list"
         :colors="[taskList.bgColor, taskList.textColor]"
       />

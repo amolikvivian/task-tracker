@@ -9,14 +9,14 @@ export const mutations = {
   SET_TASKS(state, data) {
     state.tasks = data
   },
-  ADD_TASK(state, { id, status, title, description }) {
+  ADD_TASK(state, { id, status_id, title, description }) {
     let newTask = {
       id: id,
       title: title,
       description: description,
     }
     state.tasks.map((task) => {
-      if (task.status === status) {
+      if (task.t_id === status_id) {
         task.list.push(newTask)
       }
     })
@@ -54,7 +54,7 @@ export const mutations = {
   },
   DELETE_TASK(state, data) {
     state.tasks.map((task) => {
-      if (task.status == data.status) {
+      if (task.t_id == data.status_id) {
         task.list.splice(
           task.list.findIndex((t) => t.id == data.id),
           1
