@@ -100,7 +100,7 @@ export default {
     },
     getCurrentIndex() {
       console.log(this.$store.getters.task)
-      // this.counter = this.$store.getters.task.status_id
+      this.counter = this.$store.getters.task.status_id
     },
     changeStatus() {
       this.counter++
