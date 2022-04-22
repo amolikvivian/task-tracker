@@ -8,6 +8,7 @@
 - [x] Edit Title and Description
 - [x] Delete Task
 - [x] Fix Tailwind issues on deployment
+- [x] Add New Status
 - [ ] Status Change from drag and drop
 - [ ] Status Change from task page 
 
