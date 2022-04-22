@@ -48,12 +48,17 @@
 
 <script>
 export default {
+  data() {
+    return {
+      task: null,
+    }
+  },
   mounted() {
     this.$store.dispatch('getTaskById', this.$route.params.id)
   },
-  computed: {
-    task() {
-      return { ...this.$store.getters.task }
+  watch: {
+    '$store.state.task': function () {
+      this.task = { ...this.$store.getters.task }
     },
   },
   destroyed() {
