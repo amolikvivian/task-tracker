@@ -1,18 +1,15 @@
 # task-tracker
 
-## Features Added
+## Progress List
 
 - [x] Drag and Drop
 - [x] Add New Task
 - [x] View Task Page
 - [x] Edit Title and Description
 - [x] Delete Task
-
-## To Add/Fix
-
+- [x] Fix Tailwind issues on deployment
 - [ ] Status Change from drag and drop
 - [ ] Status Change from task page 
-- [ ] Fix Tailwind issues on deployment
 
 
 ## Build Setup
