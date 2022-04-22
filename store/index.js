@@ -1,5 +1,5 @@
 import _ from 'lodash'
-
+import { v4 as uuid4 } from 'uuid'
 export const state = () => ({
   tasks: null,
   task: null,
@@ -30,7 +30,7 @@ export const mutations = {
             ...t,
             status: task.status,
             bgColor: task.bgColor,
-            textColor: task.textColor
+            textColor: task.textColor,
           }
           state.task = obj
         }
@@ -42,6 +42,15 @@ export const mutations = {
   },
   DELETE_TASK(state, id) {
     state.tasks = state.tasks.filter((task) => task.id !== id)
+  },
+  ADD_STATUS(state, data) {
+    state.tasks.push({
+      t_id: uuid4(),
+      status: data,
+      bgColor: 'bg-purple-200',
+      textColor: 'text-purple-900',
+      list: []
+    })
   },
 }
 
@@ -69,6 +78,9 @@ export const actions = {
   deleteTask({ commit }, id) {
     // let res = await this.$axios.delete('/tasks/ + id)
     commit('DELETE_TASK', id)
+  },
+  newStatus({ commit }, payload) {
+    commit('ADD_STATUS', payload)
   },
 }
 

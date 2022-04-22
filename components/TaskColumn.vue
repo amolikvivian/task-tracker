@@ -34,6 +34,7 @@
       @end="drag = false"
       :ghostClass="colors[0]"
       animation="400"
+      :move="checkMove"
     >
       <div v-for="(task, i) in tasks" :key="i">
         <TaskCard
@@ -91,6 +92,9 @@ export default {
     deleteTask(id) {
       this.tasks = this.tasks.filter((task) => task.id !== id)
     },
+    checkMove(e) {
+      console.log(e)
+    }
   },
 }
 </script>
