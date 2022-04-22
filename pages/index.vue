@@ -62,14 +62,15 @@ export default {
   methods: {
     toggleNewStatus() {
       this.showNewStatusLabel = true
-      // this.$store.dispatch('newStatus')
     },
     saveNewStatus() {
       this.$store.dispatch('newStatus', this.newStatusLabel)
       this.showNewStatusLabel = false
+      this.newStatusLabel = null
     },
     cancelNewStatus() {
       this.showNewStatusLabel = false
+      this.newStatusLabel = null
     },
   },
 }
