@@ -25,12 +25,12 @@
       "textColor": "text-yellow-900",
       "list": [
         {
-          "id": 0,
+          "id": 2,
           "title": "Fix UI",
           "description": "Fix UI issues."
         },
         {
-          "id": 1,
+          "id": 3,
           "title": "Setup JSON server",
           "description": "Setup my JSON server for live data."
         }
@@ -43,7 +43,7 @@
       "textColor": "text-green-900",
       "list": [
         {
-          "id": 0,
+          "id": 4,
           "title": "Add Page",
           "description": "Add individual pages for tasks."
         }
