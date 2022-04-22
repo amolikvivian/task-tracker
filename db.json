@@ -48,13 +48,6 @@
           "description": "Add individual pages for tasks."
         }
       ]
-    },
-    {
-      "t_id": 3,
-      "status": "Dump",
-      "bgColor": "bg-blue-200",
-      "textColor": "text-blue-900",
-      "list": []
     }
   ]
 }
