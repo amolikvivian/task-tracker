@@ -19,16 +19,21 @@
       <span class="rounded px-2 w-max text-gray-500">April 17, 2022</span>
     </div>
     <div class="flex items-center justify-between pt-3 text-sm">
-      <button class="bg-gray-200 px-2 flex items-center rounded">
+      <span class="bg-gray-200 px-2 flex items-center rounded">
         Status
         <Icon name="arrow-down" class="mt-1 pl-1" />
-      </button>
+      </span>
 
       <span
         class="rounded px-2 w-max mr-2"
         :class="[task.bgColor, task.textColor]"
         >{{ task.status }}</span
       >
+    </div>
+    <div class="flex items-center justify-between pt-5 text-sm">
+      <button @click="deleteTask()" class="text-red-400 px-1 font-medium flex items-center rounded">
+        Delete Task
+      </button>
     </div>
     <hr class="my-4" />
     <span class="text-md text-gray-500">Description</span>
@@ -69,13 +74,21 @@ export default {
     updateTask() {
       let payload = {
         id: this.$route.params.id,
-        data: this.task,
+        ...this.task,
       }
       this.$store.dispatch('updateTask', payload)
     },
     backHome() {
       this.$router.push('/')
     },
+    deleteTask() {
+      let payload = {
+        id: this.task.id,
+        status: this.task.status
+      }
+      this.$store.dispatch('deleteTask', payload)
+      this.$router.push('/')
+    }
   },
 }
 </script>

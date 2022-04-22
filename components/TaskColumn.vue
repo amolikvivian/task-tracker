@@ -6,12 +6,10 @@
       @mouseleave="showActions = false"
     >
       <div class="flex items-center justify-around text-sm">
-        <span
-          class="rounded px-2 ml-1"
-          :class="[colors[0], colors[1]]"
+        <span class="rounded px-2 ml-1" :class="[colors[0], colors[1]]"
           >{{ status }}
         </span>
-        <span class="text-gray-400 px-3 font-normal">{{count}}</span>
+        <span class="text-gray-400 px-3 font-normal">{{ count }}</span>
       </div>
       <div class="flex" v-if="showActions">
         <button
@@ -21,7 +19,7 @@
         </button>
         <button
           class="details-btn hover:bg-gray-200 flex items-center justify-center px-1 rounded"
-          @click="addTask(status)"
+          @click="addTask()"
         >
           <Icon name="plus" />
         </button>
@@ -34,9 +32,10 @@
       @end="drag = false"
       :ghostClass="colors[0]"
       animation="400"
-      :move="checkMove"
+      :data-box="status"
+      :move="moveItem"
     >
-      <div v-for="(task, i) in tasks" :key="i">
+      <div v-for="(task, i) in tasks" :key="i" :data-id="task.id">
         <TaskCard
           class="mt-2"
           :taskData="task"
@@ -45,14 +44,14 @@
         />
       </div>
     </draggable>
-    <button class="px-2 py-3 text-gray-400" @click="addTask(status)">
+    <button class="px-2 py-3 text-gray-400" @click="addTask()">
       <span class="text-xl">+</span> New
     </button>
   </div>
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import draggable from 'vuedraggable'
 export default {
   props: ['status', 'data', 'colors'],
@@ -67,6 +66,13 @@ export default {
   },
   mounted() {
     this.getTasks()
+  },
+  watch: {
+    '$store.state.tasks': function () {
+      this.$store.state.tasks.map((task) => {
+        task.list
+      })
+    },
   },
   computed: {
     count() {
@@ -86,15 +92,28 @@ export default {
       }
       this.$store.dispatch('addTask', payload)
     },
+    
+    deleteTask(id) {
+      this.tasks = this.tasks.filter((task) => task.id !== id)
+      let payload = {
+        id: id,
+        status: this.status,
+      }
+      this.$store.dispatch('deleteTask', payload)
+    },
+    moveItem(e) {
+      let payload = {}
+      let movedTask = e.draggedContext.element
+      payload = {
+        ...movedTask,
+        oldStatus: e.from.attributes['data-box']['value'],
+        newStatus: e.to.attributes['data-box']['value'],
+      }
+      this.$store.dispatch('updateTask', payload)
+    },
     toTaskPage(id) {
       this.$router.push({ path: '/task/' + id })
     },
-    deleteTask(id) {
-      this.tasks = this.tasks.filter((task) => task.id !== id)
-    },
-    checkMove(e) {
-      console.log(e)
-    }
   },
 }
 </script>

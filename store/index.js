@@ -38,10 +38,29 @@ export const mutations = {
     })
   },
   UPDATE_TASK(state, data) {
-    state.tasks[data.id] = data.data
+    let editedTask = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+    }
+
+    state.tasks.map((task) => {
+      task.list.map((t, idx) => {
+        if (t.id == data.id) {
+          task.list[idx] = editedTask
+        }
+      })
+    })
   },
-  DELETE_TASK(state, id) {
-    state.tasks = state.tasks.filter((task) => task.id !== id)
+  DELETE_TASK(state, data) {
+    state.tasks.map((task) => {
+      if (task.status == data.status) {
+        task.list.splice(
+          task.list.findIndex((t) => t.id == data.id),
+          1
+        )
+      }
+    })
   },
   ADD_STATUS(state, data) {
     state.tasks.push({
@@ -49,7 +68,7 @@ export const mutations = {
       status: data,
       bgColor: 'bg-purple-200',
       textColor: 'text-purple-900',
-      list: []
+      list: [],
     })
   },
 }
@@ -75,9 +94,9 @@ export const actions = {
     // let res = await this.$axios.put('/tasks/' + payload.id, payload.data)
     commit('UPDATE_TASK', payload)
   },
-  deleteTask({ commit }, id) {
+  deleteTask({ commit }, payload) {
     // let res = await this.$axios.delete('/tasks/ + id)
-    commit('DELETE_TASK', id)
+    commit('DELETE_TASK', payload)
   },
   newStatus({ commit }, payload) {
     commit('ADD_STATUS', payload)
@@ -91,9 +110,7 @@ export const getters = {
   task: (state) => {
     return state.task
   },
-  uniqueStatus: (state) => {
-    return [
-      ...new Map(state?.tasks?.map((task) => [task.status, task])).values(),
-    ]
+  tasksByStatus: (state) => (status) => {
+    return state.tasks.filter((task) => task.status == status)[0].list
   },
 }

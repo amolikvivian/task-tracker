@@ -51,12 +51,10 @@ export default {
       this.$store.dispatch('getTasks')
     }
   },
+
   computed: {
     tasks() {
       return this.$store.getters.tasks
-    },
-    uniqueStatusData() {
-      return this.$store.getters.uniqueStatus
     },
   },
   methods: {
@@ -64,7 +62,11 @@ export default {
       this.showNewStatusLabel = true
     },
     saveNewStatus() {
-      this.$store.dispatch('newStatus', this.newStatusLabel)
+      if (this.newStatusLabel == null || this.newStatusLabel == '') {
+        this.$store.dispatch('newStatus', 'New Status')
+      } else {
+        this.$store.dispatch('newStatus', this.newStatusLabel)
+      }
       this.showNewStatusLabel = false
       this.newStatusLabel = null
     },
