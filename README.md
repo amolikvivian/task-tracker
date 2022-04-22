@@ -1,5 +1,12 @@
 # task-tracker
 
+## Features
+
+- Add New Tasks in each list
+- Add New List
+- Inline editing for individual Tasks in Task Page. Editing Title, Description and Statud
+- Drag and Drop feature for Tasks
+
 ## Progress List
 
 - [x] Drag and Drop
