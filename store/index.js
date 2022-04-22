@@ -15,6 +15,7 @@ export const mutations = {
       title: title,
       description: description,
     }
+    
     state.tasks.map((task) => {
       if (task.t_id === status_id) {
         task.list.push(newTask)
@@ -72,6 +73,21 @@ export const mutations = {
       list: [],
     })
   },
+  UPDATE_STATUS(state, data) {
+    console.log(data)
+    const res = state.tasks[data.status_id].list.filter((ele) => {
+      return data.id !== ele.id
+    })
+
+    let obj = {
+      id: data.id,
+      title: data.title,
+      description: data.description
+    }
+    
+    state.tasks[data.status_id].list = res
+    state.tasks[data.new_tid].list.push(obj)
+  },
 }
 
 export const actions = {
@@ -102,6 +118,9 @@ export const actions = {
   newStatus({ commit }, payload) {
     commit('ADD_STATUS', payload)
   },
+  updateStatus({ commit }, payload) {
+    commit('UPDATE_STATUS', payload)
+  },
 }
 
 export const getters = {
@@ -113,5 +132,8 @@ export const getters = {
   },
   tasksByStatus: (state) => (status) => {
     return state.tasks.filter((task) => task.status == status)[0].list
+  },
+  statusList: (state) => {
+    return [...new Map(state.tasks.map((task) => [task.status, task])).values()]
   },
 }
