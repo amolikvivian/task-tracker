@@ -29,13 +29,21 @@
         >{{ statusList[counter].status }}</span
       >
     </div>
-    <div class="flex items-center justify-between pt-5 text-sm">
+    <div class="flex items-center pt-5 text-sm">
       <button
         @click="deleteTask()"
         class="text-red-400 px-1 font-medium flex items-center rounded"
       >
         Delete Task
       </button>
+      <div v-if="showDeleteOptions" class="flex items-center">
+        <button @click="confirmDelete()" class="pl-2" title="Confirm">
+          <Icon name="check" />
+        </button>
+        <button @click="cancelDelete()" class="px-2" title="Cancel">
+          <Icon name="cross" />
+        </button>
+      </div>
     </div>
     <hr class="my-4" />
     <span class="text-md text-gray-500">Description</span>
@@ -59,7 +67,7 @@ export default {
     return {
       task: null,
       counter: 0,
-      currentStatus: null,
+      showDeleteOptions: false,
     }
   },
   mounted() {
@@ -90,13 +98,21 @@ export default {
     backHome() {
       this.$router.push('/')
     },
+
     deleteTask() {
+      this.showDeleteOptions = true
+    },
+    confirmDelete() {
       let payload = {
         id: this.task.id,
         status_id: this.task.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
       this.$router.push('/')
+      this.showDeleteOptions = false
+    },
+    cancelDelete() {
+      this.showDeleteOptions = false
     },
     getCurrentIndex() {
       console.log(this.$store.getters.task)
