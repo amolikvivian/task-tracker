@@ -22,20 +22,27 @@
       @click="changeStatus()"
     >
       <span class="bg-gray-200 px-2 flex items-center rounded"> Status </span>
-
       <span
         class="rounded px-2 w-max mr-2"
-        :class="[statusList[counter].bgColor, statusList[counter].textColor]"
-        >{{ statusList[counter].status }}</span
+        :class="[statusList[currentIndex].bgColor, statusList[currentIndex].textColor]"
+        >{{ statusList[currentIndex].status }}</span
       >
     </div>
-    <div class="flex items-center justify-between pt-5 text-sm">
+    <div class="flex items-center pt-5 text-sm">
       <button
         @click="deleteTask()"
         class="text-red-400 px-1 font-medium flex items-center rounded"
       >
         Delete Task
       </button>
+      <div v-if="showDeleteOptions" class="flex items-center">
+        <button @click="confirmDelete()" class="pl-2" title="Confirm">
+          <Icon name="check" />
+        </button>
+        <button @click="cancelDelete()" class="px-2" title="Cancel">
+          <Icon name="cross" />
+        </button>
+      </div>
     </div>
     <hr class="my-4" />
     <span class="text-md text-gray-500">Description</span>
@@ -58,17 +65,17 @@ export default {
   data() {
     return {
       task: null,
-      counter: 0,
-      currentStatus: null,
+      currentIndex: 0,
+      showDeleteOptions: false,
     }
   },
   mounted() {
     this.$store.dispatch('getTaskById', this.$route.params.id)
-    this.getCurrentIndex()
   },
   watch: {
     '$store.state.task': function () {
       this.task = { ...this.$store.getters.task }
+      this.getCurrentIndex()
     },
   },
   computed: {
@@ -90,25 +97,42 @@ export default {
     backHome() {
       this.$router.push('/')
     },
+
     deleteTask() {
+      this.showDeleteOptions = true
+    },
+    confirmDelete() {
       let payload = {
         id: this.task.id,
         status_id: this.task.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
       this.$router.push('/')
+      this.showDeleteOptions = false
+    },
+    cancelDelete() {
+      this.showDeleteOptions = false
     },
     getCurrentIndex() {
-      console.log(this.$store.getters.task)
-      this.counter = this.$store.getters.task.status_id
+      let temp = this.$store.getters.tasks
+        .map((task) => {
+          return task.t_id == this.task.status_id
+        })
+        .findIndex((ele) => {
+          return ele === true
+        })
+
+        this.currentIndex = temp
     },
     changeStatus() {
-      this.counter++
-      if (this.counter > this.statusList.length - 1) this.counter = 0
+      let old_tid = this.currentIndex
+      this.currentIndex++
+      if (this.currentIndex > this.statusList.length - 1) this.currentIndex = 0
 
       let payload = {
         ...this.task,
-        new_tid: this.counter,
+        old_tid: old_tid,
+        new_tid: this.currentIndex,
       }
 
       this.$store.dispatch('updateStatus', payload)
