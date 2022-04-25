@@ -29,16 +29,17 @@
       v-model="tasks"
       group="tasks"
       @start="drag = true"
-      @end="drag = false"
       :ghostClass="colors[0]"
       animation="400"
+      @end="moveItem"
       :data-box="this.status.status_id"
     >
-      <div v-for="(task, i) in tasks" :key="i" :data-id="task.id">
+      <div v-for="(task, i) in tasks" :key="i" @dragstart="setTask(task)">
         <TaskCard
           class="mt-2"
           :taskData="task"
-          @deleteTask="deleteTask(task.id)"
+          :data-id="task.id"
+          @deleteTask="deleteTask(task)"
           @viewTask="toTaskPage(task.id)"
         />
       </div>
@@ -76,33 +77,46 @@ export default {
     getTasks() {
       this.tasks = this.data
     },
-    addTask() {
-      let payload = {
+    addTask(data) {
+      if (data) {
+        this.$store.dispatch('addTask', data)
+      } else {
+        let payload = {
           id: uuidv4(),
           status_id: this.status.status_id,
           title: 'New Task',
           description: '',
         }
         this.$store.dispatch('addTask', payload)
+      }
     },
-
-    deleteTask(id) {
-      this.tasks = this.tasks.filter((task) => task.id !== id)
+    setTask(t) {
+      this.$store.dispatch('setMoveTask', t)
+    },
+    deleteTask(data) {
+      this.tasks = this.tasks.filter((task) => task.id != data.id)
       let payload = {
-        id: id,
-        status_id: this.status.status_id,
+        id: data.id,
+        status_id: data.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
     },
+
     moveItem(e) {
-      let payload = {}
-      let movedTask = e.draggedContext.element
-      payload = {
-        ...movedTask,
-        status_id: Number(e.from.attributes['data-box']['value']),
-        new_tid: Number(e.to.attributes['data-box']['value']),
+      let delete_payload = {
+        id: this.$store.state.move_task.id,
+        status_id: e.from.attributes['data-box']['value'],
       }
-      this.$store.dispatch('updateStatus', payload)
+      this.deleteTask(delete_payload)
+
+      let add_payload = {
+        id: this.$store.state.move_task.id,
+        title: this.$store.state.move_task.title,
+        description: this.$store.state.move_task.description,
+        status_id: e.to.attributes['data-box']['value'],
+      }
+
+      this.addTask(add_payload)
     },
     toTaskPage(id) {
       this.$router.push({ path: '/task/' + id })
