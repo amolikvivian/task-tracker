@@ -13,11 +13,14 @@
       </div>
       <div class="flex" v-if="showActions">
         <button
+        title="Delete Status"
           class="details-btn hover:bg-gray-200 flex items-center justify-center px-1 rounded"
+          @click="deleteStatus()"
         >
-          <Icon name="dots" />
+          <Icon name="delete" />
         </button>
         <button
+        title="Add New Task"
           class="details-btn hover:bg-gray-200 flex items-center justify-center px-1 rounded"
           @click="addTask()"
         >
@@ -101,7 +104,6 @@ export default {
       }
       this.$store.dispatch('deleteTask', payload)
     },
-
     moveItem(e) {
       let delete_payload = {
         id: this.$store.state.move_task.id,
@@ -117,6 +119,9 @@ export default {
       }
 
       this.addTask(add_payload)
+    },
+    deleteStatus() {
+      this.$store.dispatch('deleteStatus', this.status.status_id)
     },
     toTaskPage(id) {
       this.$router.push({ path: '/task/' + id })

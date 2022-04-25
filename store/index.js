@@ -3,7 +3,7 @@ import { v4 as uuid4 } from 'uuid'
 export const state = () => ({
   tasks: null,
   task: null,
-  move_task: null
+  move_task: null,
 })
 
 export const mutations = {
@@ -77,20 +77,23 @@ export const mutations = {
     const res = state.tasks[data.old_tid].list.filter((ele) => {
       return data.id !== ele.id
     })
-
-
     let obj = {
       id: data.id,
       title: data.title,
-      description: data.description
+      description: data.description,
     }
-    
+
     state.tasks[data.old_tid].list = res
     state.tasks[data.new_tid].list.push(obj)
   },
   SET_MOVE_TASK(state, data) {
     state.move_task = data
-  }
+  },
+  DELETE_STATUS(state, id) {
+    state.tasks = state.tasks.filter((task) => {
+      return task.t_id != id
+    })
+  },
 }
 
 export const actions = {
@@ -124,9 +127,12 @@ export const actions = {
   updateStatus({ commit }, payload) {
     commit('UPDATE_STATUS', payload)
   },
-  setMoveTask({commit}, payload) {
+  setMoveTask({ commit }, payload) {
     commit('SET_MOVE_TASK', payload)
-  }
+  },
+  deleteStatus({ commit }, payload) {
+    commit('DELETE_STATUS', payload)
+  },
 }
 
 export const getters = {
