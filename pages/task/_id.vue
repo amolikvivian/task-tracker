@@ -15,7 +15,7 @@
         Date Created
         <Icon name="clock" class="mt-1 pl-1" />
       </span>
-      <span class="rounded px-2 w-max text-gray-500">April 17, 2022</span>
+      <span class="rounded px-2 w-max text-gray-600">April 17, 2022</span>
     </div>
     <div
       class="flex items-center justify-between pt-3 text-sm cursor-pointer"
@@ -45,13 +45,14 @@
       </div>
     </div>
     <hr class="my-4" />
-    <span class="text-md text-gray-500">Description</span>
+    <span class="text-md text-gray-600">Description</span>
     <textarea
       cols="30"
       rows="10"
       class="focus:border-none focus:outline-none mt-3"
       v-model="task.description"
       @input="updateTask"
+      placeholder="Add description here"
     >
     </textarea>
   </div>
