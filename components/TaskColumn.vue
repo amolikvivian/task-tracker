@@ -13,14 +13,14 @@
       </div>
       <div class="flex" v-if="showActions">
         <button
-        title="Delete Status"
+          title="Delete Status"
           class="details-btn hover:bg-gray-200 flex items-center justify-center px-1 rounded"
           @click="deleteStatus()"
         >
           <Icon name="delete" />
         </button>
         <button
-        title="Add New Task"
+          title="Add New Task"
           class="details-btn hover:bg-gray-200 flex items-center justify-center px-1 rounded"
           @click="addTask()"
         >
@@ -105,20 +105,24 @@ export default {
       this.$store.dispatch('deleteTask', payload)
     },
     moveItem(e) {
-      let delete_payload = {
-        id: this.$store.state.move_task.id,
-        status_id: e.from.attributes['data-box']['value'],
+      if (
+        e.to.attributes['data-box']['value'] !=
+        e.from.attributes['data-box']['value']
+      ) {
+        let add_payload = {
+          id: this.$store.state.move_task.id,
+          title: this.$store.state.move_task.title,
+          description: this.$store.state.move_task.description,
+          status_id: e.to.attributes['data-box']['value'],
+        }
+        this.addTask(add_payload)
+        
+        let delete_payload = {
+          id: this.$store.state.move_task.id,
+          status_id: e.from.attributes['data-box']['value'],
+        }
+        this.deleteTask(delete_payload)
       }
-      this.deleteTask(delete_payload)
-
-      let add_payload = {
-        id: this.$store.state.move_task.id,
-        title: this.$store.state.move_task.title,
-        description: this.$store.state.move_task.description,
-        status_id: e.to.attributes['data-box']['value'],
-      }
-
-      this.addTask(add_payload)
     },
     deleteStatus() {
       this.$store.dispatch('deleteStatus', this.status.status_id)
