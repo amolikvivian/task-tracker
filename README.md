@@ -18,7 +18,7 @@
 - [x] Fix Tailwind issues on deployment
 - [x] Add New Status
 - [x] Status Change from task view page
-- [ ] Status Change on drag and drop
+- [x] Status Change on drag and drop
 
 
 ## Build Setup
