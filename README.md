@@ -6,6 +6,7 @@
 - Add New List
 - Inline editing for individual Tasks in Task Page. Editing Title, Description and Status
 - Drag and Drop feature for Tasks
+- Added Continuous Deployment using Netlify
 
 ## Progress List
 
