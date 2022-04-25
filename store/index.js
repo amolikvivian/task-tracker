@@ -74,10 +74,10 @@ export const mutations = {
     })
   },
   UPDATE_STATUS(state, data) {
-    console.log(data)
-    const res = state.tasks[data.status_id].list.filter((ele) => {
+    const res = state.tasks[data.old_tid].list.filter((ele) => {
       return data.id !== ele.id
     })
+
 
     let obj = {
       id: data.id,
@@ -85,7 +85,7 @@ export const mutations = {
       description: data.description
     }
     
-    state.tasks[data.status_id].list = res
+    state.tasks[data.old_tid].list = res
     state.tasks[data.new_tid].list.push(obj)
   },
 }

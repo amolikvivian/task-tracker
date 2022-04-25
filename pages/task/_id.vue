@@ -22,11 +22,10 @@
       @click="changeStatus()"
     >
       <span class="bg-gray-200 px-2 flex items-center rounded"> Status </span>
-
       <span
         class="rounded px-2 w-max mr-2"
-        :class="[statusList[counter].bgColor, statusList[counter].textColor]"
-        >{{ statusList[counter].status }}</span
+        :class="[statusList[currentIndex].bgColor, statusList[currentIndex].textColor]"
+        >{{ statusList[currentIndex].status }}</span
       >
     </div>
     <div class="flex items-center pt-5 text-sm">
@@ -66,17 +65,17 @@ export default {
   data() {
     return {
       task: null,
-      counter: 0,
+      currentIndex: 0,
       showDeleteOptions: false,
     }
   },
   mounted() {
     this.$store.dispatch('getTaskById', this.$route.params.id)
-    this.getCurrentIndex()
   },
   watch: {
     '$store.state.task': function () {
       this.task = { ...this.$store.getters.task }
+      this.getCurrentIndex()
     },
   },
   computed: {
@@ -115,16 +114,25 @@ export default {
       this.showDeleteOptions = false
     },
     getCurrentIndex() {
-      console.log(this.$store.getters.task)
-      this.counter = this.$store.getters.task.status_id
+      let temp = this.$store.getters.tasks
+        .map((task) => {
+          return task.t_id == this.task.status_id
+        })
+        .findIndex((ele) => {
+          return ele === true
+        })
+
+        this.currentIndex = temp
     },
     changeStatus() {
-      this.counter++
-      if (this.counter > this.statusList.length - 1) this.counter = 0
+      let old_tid = this.currentIndex
+      this.currentIndex++
+      if (this.currentIndex > this.statusList.length - 1) this.currentIndex = 0
 
       let payload = {
         ...this.task,
-        new_tid: this.counter,
+        old_tid: old_tid,
+        new_tid: this.currentIndex,
       }
 
       this.$store.dispatch('updateStatus', payload)
