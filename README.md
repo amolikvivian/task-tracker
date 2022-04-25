@@ -4,8 +4,9 @@
 
 - Add New Tasks in each list
 - Add New List
+- Delete List
 - Inline editing for individual Tasks in Task Page. Editing Title, Description and Status
-- Drag and Drop feature for Tasks
+- Drag and Drop feature to change status for tasks
 - Added Continuous Deployment using Netlify
 
 ## Progress List
@@ -19,6 +20,7 @@
 - [x] Add New Status
 - [x] Status Change from task view page
 - [x] Status Change on drag and drop
+- [x] Delete status list
 
 
 ## Build Setup
