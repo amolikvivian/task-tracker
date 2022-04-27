@@ -11,7 +11,7 @@ export const mutations = {
     state.tasks = data
   },
   ADD_TASK(state, { id, status_id, title, description }) {
-    let newTask = {
+    const newTask = {
       id: id,
       title: title,
       description: description,
@@ -86,8 +86,8 @@ export const mutations = {
     state.tasks[data.old_tid].list = res
     state.tasks[data.new_tid].list.push(obj)
   },
-  SET_MOVE_TASK(state, data) {
-    state.move_task = data
+  UPDATE_TASK_LIST(state, data) {
+    state.tasks.filter((task) => task.t_id === data.t_id)[0].list = data.list
   },
   DELETE_STATUS(state, id) {
     state.tasks = state.tasks.filter((task) => {
@@ -127,8 +127,8 @@ export const actions = {
   updateStatus({ commit }, payload) {
     commit('UPDATE_STATUS', payload)
   },
-  setMoveTask({ commit }, payload) {
-    commit('SET_MOVE_TASK', payload)
+  updateTaskList({ commit }, payload) {
+    commit('UPDATE_TASK_LIST', payload)
   },
   deleteStatus({ commit }, payload) {
     commit('DELETE_STATUS', payload)

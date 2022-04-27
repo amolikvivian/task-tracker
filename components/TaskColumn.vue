@@ -34,7 +34,6 @@
       @start="drag = true"
       :ghostClass="colors[0]"
       animation="400"
-      @end="moveItem"
       :data-box="this.status.status_id"
     >
       <div v-for="(task, i) in tasks" :key="i" @dragstart="setTask(task)">
@@ -70,7 +69,15 @@ export default {
   mounted() {
     this.getTasks()
   },
-
+  watch: {
+    tasks() {
+      let payload = {
+        list: this.tasks,
+        t_id: this.status.status_id,
+      }
+      this.$store.dispatch('updateTaskList', payload)
+    },
+  },
   computed: {
     count() {
       return this.tasks.length
@@ -94,7 +101,7 @@ export default {
       }
     },
     setTask(t) {
-      this.$store.dispatch('setMoveTask', t)
+      // this.$store.dispatch('setMoveTask', t)
     },
     deleteTask(data) {
       this.tasks = this.tasks.filter((task) => task.id != data.id)
@@ -103,26 +110,6 @@ export default {
         status_id: data.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
-    },
-    moveItem(e) {
-      if (
-        e.to.attributes['data-box']['value'] !=
-        e.from.attributes['data-box']['value']
-      ) {
-        let add_payload = {
-          id: this.$store.state.move_task.id,
-          title: this.$store.state.move_task.title,
-          description: this.$store.state.move_task.description,
-          status_id: e.to.attributes['data-box']['value'],
-        }
-        this.addTask(add_payload)
-        
-        let delete_payload = {
-          id: this.$store.state.move_task.id,
-          status_id: e.from.attributes['data-box']['value'],
-        }
-        this.deleteTask(delete_payload)
-      }
     },
     deleteStatus() {
       this.$store.dispatch('deleteStatus', this.status.status_id)
