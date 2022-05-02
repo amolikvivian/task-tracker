@@ -1,137 +1,113 @@
-import _ from 'lodash'
-import { v4 as uuid4 } from 'uuid'
 export const state = () => ({
+  user: null,
   tasks: null,
-  task: null,
-  move_task: null,
+  currentTask: null,
+  tasksByStatus: null,
+  currentStatusId: null,
 })
 
 export const mutations = {
+  SET_USER(state, data) {
+    state.user = data
+  },
   SET_TASKS(state, data) {
     state.tasks = data
   },
-  ADD_TASK(state, { id, status_id, title, description }) {
-    const newTask = {
-      id: id,
-      title: title,
-      description: description,
-    }
-    state.tasks.map((task) => {
-      if (task.t_id == status_id) {
-        task.list.push(newTask)
-      }
-    })
+  SET_CURRENT_TASK(state, data) {
+    state.currentTask = data
   },
-  SET_TASK(state, id) {
-    let obj = {}
-    state.tasks.map((task) => {
-      task.list.map((t) => {
-        if (t.id == id) {
-          obj = {
-            ...t,
-            status: task.status,
-            status_id: task.t_id,
-            bgColor: task.bgColor,
-            textColor: task.textColor,
-          }
-          state.task = obj
-        }
-      })
-    })
+  SET_TASKS_BY_STATUS(state, data) {
+    state.tasksByStatus = data
   },
-  UPDATE_TASK(state, data) {
-    let editedTask = {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-    }
-
-    state.tasks.map((task) => {
-      task.list.map((t, idx) => {
-        if (t.id == data.id) {
-          task.list[idx] = editedTask
-        }
-      })
-    })
-  },
-  DELETE_TASK(state, data) {
-    state.tasks.map((task) => {
-      if (task.t_id == data.status_id) {
-        task.list.splice(
-          task.list.findIndex((t) => t.id == data.id),
-          1
-        )
-      }
-    })
-  },
-  ADD_STATUS(state, data) {
-    state.tasks.push({
-      t_id: uuid4(),
-      status: data,
-      bgColor: 'bg-purple-200',
-      textColor: 'text-purple-900',
-      list: [],
-    })
-  },
-  UPDATE_STATUS(state, data) {
-    const res = state.tasks[data.old_tid].list.filter((ele) => {
-      return data.id !== ele.id
-    })
-    let obj = {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-    }
-
-    state.tasks[data.old_tid].list = res
-    state.tasks[data.new_tid].list.push(obj)
-  },
-  UPDATE_TASK_LIST(state, data) {
-    state.tasks.filter((task) => task.t_id === data.t_id)[0].list = data.list
-  },
-  DELETE_STATUS(state, id) {
-    state.tasks = state.tasks.filter((task) => {
-      return task.t_id != id
-    })
+  SET_CURRENT_STATUS_ID(state, data) {
+    state.currentStatusId = data
   },
 }
 
 export const actions = {
-  async getTasks({ commit }) {
-    let res = await this.$axios.get('/tasks')
-    commit('SET_TASKS', res.data)
+  setUser({ commit }, payload) {
+    commit('SET_USER', payload)
   },
-  getTaskById({ commit }, id) {
-    if (id == null) {
-      commit('SET_TASK', null)
-    } else {
-      // let res = await this.$axios.get('/tasks/' + id)
-      commit('SET_TASK', id)
+  async getTasks({ commit, state }) {
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.get('/tasks/all')
+      commit('SET_TASKS', res.data.data)
+    } catch (e) {
+      console.log(e)
     }
   },
-  addTask({ commit }, payload) {
-    // let res = await this.$axios.post('/tasks', payload)
-    commit('ADD_TASK', payload)
+  async updateTaskList({ state }, payload) {
+    let status_id = payload.status_id
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.post(
+        '/tasks/set',
+        { tasks: payload.list },
+        {
+          params: {
+            status_id,
+          },
+        }
+      )
+    } catch (e) {
+      console.log(e)
+    }
   },
-  updateTask({ commit }, payload) {
-    // let res = await this.$axios.put('/tasks/' + payload.id, payload.data)
-    commit('UPDATE_TASK', payload)
+  async addStatus({ commit, state }, payload) {
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.post('/status/add', payload)
+      commit('SET_TASKS', res.data)
+    } catch (e) {
+      console.log(e)
+    }
   },
-  deleteTask({ commit }, payload) {
-    // let res = await this.$axios.delete('/tasks/ + id)
-    commit('DELETE_TASK', payload)
+  async addTask({ state }, payload) {
+    let task = {
+      title: payload.title,
+      desc: payload.desc,
+      t_id: payload.t_id,
+    }
+    let status_id = payload.status_id
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.post('/task/add', task, {
+        params: {
+          status_id,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
   },
-  newStatus({ commit }, payload) {
-    commit('ADD_STATUS', payload)
+  async getTaskById({ commit, state }, payload) {
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.post(`/get-task/${payload.t_id}`, {
+        status_id: payload.status_id,
+      })
+      commit('SET_CURRENT_TASK', res.data)
+    } catch (e) {
+      console.log(e)
+    }
   },
-  updateStatus({ commit }, payload) {
-    commit('UPDATE_STATUS', payload)
+  async deleteTask({ state }, payload) {
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.post('/task/delete', payload)
+    } catch (e) {
+      console.log(e)
+    }
   },
-  updateTaskList({ commit }, payload) {
-    commit('UPDATE_TASK_LIST', payload)
-  },
-  deleteStatus({ commit }, payload) {
-    commit('DELETE_STATUS', payload)
+  async deleteStatus({ state }, payload) {
+    try {
+      this.$axios.setToken(state.user.token, 'Bearer')
+      const res = await this.$axios.post('/status/delete', payload)
+      console.log(res.data)
+    } catch (e) {
+      console.log(e)
+    }
   },
 }
 
@@ -139,13 +115,18 @@ export const getters = {
   tasks: (state) => {
     return state.tasks
   },
-  task: (state) => {
-    return state.task
+
+  currentTask: (state) => {
+    return state.currentTask
   },
-  tasksByStatus: (state) => (status) => {
-    return state.tasks.filter((task) => task.status == status)[0].list
+  currentStatusId: (state) => {
+    return state.currentStatusId
   },
+
   statusList: (state) => {
-    return [...new Map(state.tasks.map((task) => [task.status, task])).values()]
+    return [...new Map(state.tasks.map((task) => [task.label, task])).values()]
+  },
+  tasksByStatus: (state) => {
+    return state.tasksByStatus
   },
 }

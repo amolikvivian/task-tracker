@@ -36,13 +36,13 @@
       animation="400"
       :data-box="this.status.status_id"
     >
-      <div v-for="(task, i) in tasks" :key="i" @dragstart="setTask(task)">
+      <div v-for="(task, i) in tasks" :key="i">
         <TaskCard
           class="mt-2"
           :taskData="task"
-          :data-id="task.id"
+          :data-id="task.t_id"
           @deleteTask="deleteTask(task)"
-          @viewTask="toTaskPage(task.id)"
+          @viewTask="toTaskPage(task.t_id)"
         />
       </div>
     </draggable>
@@ -56,7 +56,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import draggable from 'vuedraggable'
 export default {
-  props: ['status', 'data', 'colors'],
+  props: ['status', 'colors'],
   components: {
     draggable,
   },
@@ -64,57 +64,55 @@ export default {
     return {
       showActions: false,
       tasks: [],
+      count: 0,
     }
   },
   mounted() {
-    this.getTasks()
+    this.getTasksByStatus(this.status.status_id)
   },
   watch: {
     tasks() {
       let payload = {
         list: this.tasks,
-        t_id: this.status.status_id,
+        status_id: this.status.status_id,
       }
       this.$store.dispatch('updateTaskList', payload)
-    },
-  },
-  computed: {
-    count() {
-      return this.tasks.length
+      this.count = this.tasks.length
     },
   },
   methods: {
-    getTasks() {
-      this.tasks = this.data
-    },
-    addTask(data) {
-      if (data) {
-        this.$store.dispatch('addTask', data)
-      } else {
-        let payload = {
-          id: uuidv4(),
-          status_id: this.status.status_id,
-          title: 'New Task',
-          description: '',
+    async getTasksByStatus(status_id) {
+      if (status_id) {
+        try {
+          this.$axios.setToken(this.$store.state.user.token, 'Bearer')
+          const res = await this.$axios.get('/task-status', {
+            params: {
+              status_id,
+            },
+          })
+          this.tasks = res.data.data
+        } catch (e) {
+          console.log(e)
         }
-        this.$store.dispatch('addTask', payload)
       }
     },
-    setTask(t) {
-      // this.$store.dispatch('setMoveTask', t)
+    addTask() {
+      let payload = {
+        t_id: uuidv4(),
+        status_id: this.status.status_id,
+        title: 'New Task',
+        desc: '',
+      }
+      this.tasks.push(payload)
     },
     deleteTask(data) {
-      this.tasks = this.tasks.filter((task) => task.id != data.id)
-      let payload = {
-        id: data.id,
-        status_id: data.status_id,
-      }
-      this.$store.dispatch('deleteTask', payload)
+      this.tasks = this.tasks.filter((task) => task.t_id != data.t_id)
     },
     deleteStatus() {
-      this.$store.dispatch('deleteStatus', this.status.status_id)
+      console.log('Deleting Status')
     },
     toTaskPage(id) {
+      this.$store.commit('SET_CURRENT_STATUS_ID', this.status.status_id)
       this.$router.push({ path: '/task/' + id })
     },
   },

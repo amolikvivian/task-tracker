@@ -3,12 +3,13 @@
     <button @click="backHome()" class="flex text-lg">
       <Icon name="arrow-left" class="pb-4 mt-1" />
     </button>
+    {{ task }}
     <textarea
       class="text-4xl font-bold flex items-center py-2 focus:border-none focus:outline-none resize-none"
       cols="30"
       rows="1"
       @input="updateTask"
-      v-model="task.title"
+      v-model="task.task_data.title"
     ></textarea>
     <div class="flex items-center justify-between pt-3 text-sm">
       <span class="bg-gray-200 px-2 flex items-center rounded">
@@ -24,8 +25,11 @@
       <span class="bg-gray-200 px-2 flex items-center rounded"> Status </span>
       <span
         class="rounded px-2 w-max mr-2"
-        :class="[statusList[currentIndex].bgColor, statusList[currentIndex].textColor]"
-        >{{ statusList[currentIndex].status }}</span
+        :class="[
+          statusList[currentIndex].bgColor,
+          statusList[currentIndex].textColor,
+        ]"
+        >{{ statusList[currentIndex].label }}</span
       >
     </div>
     <div class="flex items-center pt-5 text-sm">
@@ -50,7 +54,7 @@
       cols="30"
       rows="10"
       class="focus:border-none focus:outline-none mt-3"
-      v-model="task.description"
+      v-model="task.task_data.desc"
       @input="updateTask"
       placeholder="Add description here"
     >
@@ -62,32 +66,36 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   data() {
     return {
-      task: null,
       currentIndex: 0,
       showDeleteOptions: false,
     }
   },
-  mounted() {
-    this.$store.dispatch('getTaskById', this.$route.params.id)
+  created() {
+    this.getTaskById()
   },
-  watch: {
-    '$store.state.task': function () {
-      this.task = { ...this.$store.getters.task }
-      this.getCurrentIndex()
-    },
+  destroyed() {
+    this.$store.commit('SET_CURRENT_TASK', null)
   },
   computed: {
+    task() {
+      return _.cloneDeep(this.$store.state.currentTask)
+    },
     statusList() {
       return this.$store.getters.statusList
     },
   },
-  destroyed() {
-    this.$store.dispatch('getTaskById', null)
-  },
   methods: {
+    getTaskById() {
+      let payload = {
+        status_id: this.$store.state.currentStatusId,
+        t_id: this.$route.params.id,
+      }
+      this.$store.dispatch('getTaskById', payload)
+    },
     updateTask() {
       let payload = {
         id: this.$route.params.id,
@@ -96,7 +104,7 @@ export default {
       this.$store.dispatch('updateTask', payload)
     },
     backHome() {
-      this.$router.push('/')
+      this.$router.push('/tasks')
     },
 
     deleteTask() {
@@ -104,7 +112,7 @@ export default {
     },
     confirmDelete() {
       let payload = {
-        id: this.task.id,
+        id: this.task.t_id,
         status_id: this.task.status_id,
       }
       this.$store.dispatch('deleteTask', payload)
@@ -117,26 +125,24 @@ export default {
     getCurrentIndex() {
       let temp = this.$store.getters.tasks
         .map((task) => {
-          return task.t_id == this.task.status_id
+          return task.id == this.task.status_data.id
         })
         .findIndex((ele) => {
           return ele === true
         })
-
-        this.currentIndex = temp
+      this.currentIndex = temp
     },
     changeStatus() {
       let old_tid = this.currentIndex
       this.currentIndex++
       if (this.currentIndex > this.statusList.length - 1) this.currentIndex = 0
 
-      let payload = {
-        ...this.task,
-        old_tid: old_tid,
-        new_tid: this.currentIndex,
-      }
-
-      this.$store.dispatch('updateStatus', payload)
+      // let payload = {
+      //   ...this.task,
+      //   old_tid: old_tid,
+      //   new_tid: this.currentIndex,
+      // }
+      // this.$store.dispatch('updateStatus', payload)
     },
   },
 }

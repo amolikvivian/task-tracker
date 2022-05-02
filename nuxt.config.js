@@ -14,7 +14,8 @@ export default {
   },
 
   css: ['@/assets/css/main.css'],
-  plugins: [],
+
+  // plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
 
   components: true,
 
@@ -23,7 +24,10 @@ export default {
   modules: ['@nuxtjs/axios'],
 
   axios: {
-    baseURL: 'https://my-json-server.typicode.com/amolikvivian/task-tracker',
+    baseURL: 'http://localhost:8000',
+  },
+  router: {
+    middleware: 'auth',
   },
 
   build: {},
