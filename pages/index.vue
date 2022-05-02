@@ -22,14 +22,16 @@
     </div>
     <div v-if="tasks" class="flex overflow-x-auto pt-6">
       <TaskColumn
-        class="pr-4"
+        class="px-4 py-2"
         v-for="taskList in tasks"
         :key="taskList.t_id"
         :status="
           (status = { status_id: taskList.t_id, label: taskList.status })
         "
+        :class="taskList.t_id == dropzone ? 'bg-gray-100' : ''"
         :data="taskList.list"
         :colors="[taskList.bgColor, taskList.textColor]"
+        @moved="moved"
       />
     </div>
 
@@ -46,6 +48,7 @@ export default {
     return {
       showNewStatusLabel: false,
       newStatusLabel: null,
+      dropzone: null,
     }
   },
   created() {
@@ -75,6 +78,9 @@ export default {
     cancelNewStatus() {
       this.showNewStatusLabel = false
       this.newStatusLabel = null
+    },
+    moved(val) {
+      this.dropzone = val
     },
   },
 }

@@ -32,11 +32,13 @@
       v-model="tasks"
       group="tasks"
       @start="drag = true"
+      @end="endDrag"
       :ghostClass="colors[0]"
       animation="400"
+      :move="watchMove"
       :data-box="this.status.status_id"
     >
-      <div v-for="(task, i) in tasks" :key="i" @dragstart="setTask(task)">
+      <div v-for="(task, i) in tasks" :key="i">
         <TaskCard
           class="mt-2"
           :taskData="task"
@@ -82,6 +84,9 @@ export default {
     count() {
       return this.tasks.length
     },
+    isDropzone() {
+      return this.dropzone == this.status.status_id
+    },
   },
   methods: {
     getTasks() {
@@ -116,6 +121,12 @@ export default {
     },
     toTaskPage(id) {
       this.$router.push({ path: '/task/' + id })
+    },
+    watchMove(e) {
+      this.$emit('moved', e.to.getAttribute('data-box'))
+    },
+    endDrag() {
+      this.$emit('moved', null)
     },
   },
 }
